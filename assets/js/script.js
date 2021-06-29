@@ -1,13 +1,13 @@
 // Create objects for each question
 var questionA = {
     question: "a",
-    correctA: 0,
+    correctA: "0",
     answers: [0, 1, 2, 3]
 };
 
 var questionB = {
     question: "b",
-    correctA: 0,
+    correctA: "0",
     answers: [0, 1, 2, 3]
 };
 
@@ -33,6 +33,21 @@ var currentQuestion = 0;
 startGameBtn.addEventListener('click', function () {
     startTimer();
     displayQuestion(questions[currentQuestion]);
+})
+
+// when an answer is clicked
+questionsEl.addEventListener('click', function (e) {
+    var element = e.target;
+    // check if an answer was clicked inside the questions element
+    if (element.tagName === 'LI') {
+        console.log(element.getAttribute('data-index'));
+        console.log(questions[currentQuestion].correctA);
+        if (element.getAttribute('data-index') === questions[currentQuestion].correctA) {
+            console.log("you guessed it");
+        } else {
+            console.log("wrong");
+        }
+    }
 })
 
 // set time to 100, update the timer element and then start the countdown
