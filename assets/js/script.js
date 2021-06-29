@@ -42,11 +42,13 @@ questionsEl.addEventListener('click', function (e) {
     if (element.tagName === 'LI') {
         console.log(element.getAttribute('data-index'));
         console.log(questions[currentQuestion].correctA);
+        // check if the answer is correct
         if (element.getAttribute('data-index') === questions[currentQuestion].correctA) {
             console.log("you guessed it");
         } else {
             console.log("wrong");
         }
+        nextQuestion();
     }
 })
 
@@ -65,6 +67,7 @@ function countDown() {
     // stop the interval when time reaches one
     if (timeLeft === 0) {
         clearInterval(gameTimer);
+        // end game
     }
 }
 
@@ -85,5 +88,17 @@ function displayQuestion(q) {
     // appends html elements to the page
     questionsEl.appendChild(questionh2);
     questionsEl.appendChild(questionList);
+}
+
+function nextQuestion() {
+    // if there are still questions left
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        displayQuestion(questions[currentQuestion]);
+    } else {
+        // end game as there are no questions
+        clearInterval(gameTimer);
+        // end game
+    }
 }
 
