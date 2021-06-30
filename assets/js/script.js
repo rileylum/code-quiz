@@ -13,7 +13,7 @@ var questionB = {
 
 var questionC = {
     question: "c",
-    correctA: 0,
+    correctA: "0",
     answers: [0, 1, 2, 3]
 };
 
@@ -27,7 +27,7 @@ var questionsEl = document.querySelector("#questions");
 
 // initalise variables
 var timeLeft;
-var currentQuestion = 0;
+var currentQuestion;
 
 // Start the game when button is clicked
 startGameBtn.addEventListener('click', function () {
@@ -54,7 +54,8 @@ questionsEl.addEventListener('click', function (e) {
 
 // set time to 100, update the timer element and then start the countdown
 function startTimer() {
-    timeLeft = 100;
+    currentQuestion = 0;
+    timeLeft = 10;
     timerEl.textContent = timeLeft;
     gameTimer = setInterval(countDown, 1000);
 }
@@ -67,7 +68,7 @@ function countDown() {
     // stop the interval when time reaches one
     if (timeLeft === 0) {
         clearInterval(gameTimer);
-        // end game
+        endGame();
     }
 }
 
@@ -98,7 +99,25 @@ function nextQuestion() {
     } else {
         // end game as there are no questions
         clearInterval(gameTimer);
-        // end game
+        endGame();
     }
+}
+
+function endGame() {
+    questionsEl.innerHTML = "";
+    var endHeading = document.createElement("h1");
+    var endP = document.createElement("p");
+    var endInput = document.createElement("input");
+    var endBackBtn = document.createElement("button");
+    var endSubmitBtn = document.createElement("button");
+
+    endHeading.textContent = "All Done!";
+    endP.textContent = "Your score was: " + timeLeft;
+
+    questionsEl.appendChild(endHeading);
+    questionsEl.appendChild(endP);
+    questionsEl.appendChild(endBackBtn);
+    questionsEl.appendChild(endSubmitBtn);
+
 }
 
