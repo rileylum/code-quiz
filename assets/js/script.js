@@ -28,12 +28,21 @@ var questionsEl = document.querySelector("#questions");
 // initalise variables
 var timeLeft;
 var currentQuestion;
+var highScores;
+
+var storedScores = JSON.parse(localStorage.getItem('highscores'));
+
+if (!storedScores) {
+    highScores = [];
+} else {
+    highScores = storedScores;
+};
 
 // Start the game when button is clicked
 startGameBtn.addEventListener('click', function () {
     startTimer();
     displayQuestion(questions[currentQuestion]);
-})
+});
 
 // when an answer is clicked
 questionsEl.addEventListener('click', function (e) {
@@ -50,7 +59,20 @@ questionsEl.addEventListener('click', function (e) {
         }
         nextQuestion();
     }
-})
+});
+
+// when submit button is pressed in the game end screen
+questionsEl.addEventListener('click', function (e) {
+    e.preventDefault();
+    var element = e.target;
+    var endInput = document.querySelector("input");
+
+    if (element.getAttribute("data-type") === "submit-score") {
+        highScores.push({ initials: endInput.value, score: timeLeft });
+        localStorage.setItem("highscores", JSON.stringify(highScores));
+        showHighScores();
+    }
+});
 
 // set time to 100, update the timer element and then start the countdown
 function startTimer() {
@@ -104,20 +126,37 @@ function nextQuestion() {
 }
 
 function endGame() {
+    // clear screen
     questionsEl.innerHTML = "";
+    // create elements
     var endHeading = document.createElement("h1");
     var endP = document.createElement("p");
     var endInput = document.createElement("input");
-    var endBackBtn = document.createElement("button");
     var endSubmitBtn = document.createElement("button");
-
+    // edit element content
     endHeading.textContent = "All Done!";
-    endP.textContent = "Your score was: " + timeLeft;
+    endP.innerHTML = "Your score was: " + timeLeft + ". </br> Submit your high-score!"
+    endInput.setAttribute("placeholder", "Enter your initials.")
+    endSubmitBtn.textContent = "Submit"
+    endSubmitBtn.setAttribute("data-type", "submit-score");
 
+    // add elements to page
     questionsEl.appendChild(endHeading);
     questionsEl.appendChild(endP);
-    questionsEl.appendChild(endBackBtn);
+    questionsEl.appendChild(endInput);
     questionsEl.appendChild(endSubmitBtn);
 
 }
 
+function showHighScores() {
+    // clear screen
+    questionsEl.innerHTML = "";
+
+    var highScoreHeading = document.createElement("h1");
+    var highScoreList = document.createElement("ol");
+
+    highScoreHeading.textContent = "Highscores!";
+
+    questionsEl.appendChild(highScoreHeading);
+    questionsEl.appendChild(highScoreList);
+}
