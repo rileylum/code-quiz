@@ -61,6 +61,7 @@ questionsEl.addEventListener('click', function (e) {
         if (element.getAttribute('data-index') === questions[currentQuestion].correctA) {
             console.log("you guessed it");
         } else {
+            timeLeft -= 10;
             console.log("wrong");
         }
         nextQuestion();
@@ -104,7 +105,7 @@ questionsEl.addEventListener('click', function (e) {
 // set time to 100, update the timer element and then start the countdown
 function startTimer() {
     currentQuestion = 0;
-    timeLeft = 10;
+    timeLeft = 100;
     timerEl.textContent = timeLeft;
     gameTimer = setInterval(countDown, 1000);
 }
@@ -223,6 +224,15 @@ function showWelcome() {
     questionsEl.appendChild(welcomeBtn);
 }
 
+function clearScores() {
+    // clear scores from local storage and current variable
+    localStorage.removeItem('highscores');
+    highScores = [];
+    // display cleared list
+    showHighScores();
+}
+
+// initialise page
 function init() {
     showWelcome();
 }
