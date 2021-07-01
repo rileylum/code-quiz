@@ -58,11 +58,10 @@ questionsEl.addEventListener('click', function (e) {
         console.log(element.getAttribute('data-index'));
         console.log(questions[currentQuestion].correctA);
         // check if the answer is correct
-        if (element.getAttribute('data-index') === questions[currentQuestion].correctA) {
-            console.log("you guessed it");
-        } else {
+        if (element.getAttribute('data-index') !== questions[currentQuestion].correctA) {
+            // reduce current time as penalty for wrong answer
             timeLeft -= 10;
-            console.log("wrong");
+            timerEl.textContent = timeLeft;
         }
         nextQuestion();
     }
