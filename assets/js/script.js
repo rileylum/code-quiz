@@ -24,6 +24,7 @@ var questions = [questionA, questionB, questionC];
 var startGameBtn = document.querySelector("#start-game");
 var timerEl = document.querySelector("#timer");
 var questionsEl = document.querySelector("#questions");
+var highScoreLink = document.querySelector('#view-highscores');
 
 // initalise variables
 var timeLeft;
@@ -50,13 +51,17 @@ questionsEl.addEventListener('click', function (e) {
     }
 });
 
+// view highscores when button is clicked
+highScoreLink.addEventListener('click', function () {
+    clearInterval(gameTimer);
+    showHighScores();
+});
+
 // when an answer is clicked
 questionsEl.addEventListener('click', function (e) {
     var element = e.target;
     // check if an answer was clicked inside the questions element
     if (element.tagName === 'LI') {
-        console.log(element.getAttribute('data-index'));
-        console.log(questions[currentQuestion].correctA);
         // check if the answer is correct
         if (element.getAttribute('data-index') !== questions[currentQuestion].correctA) {
             // reduce current time as penalty for wrong answer
@@ -189,12 +194,16 @@ function showHighScores() {
     backBtn.setAttribute("data-type", "go-back");
     clearHighScoreBtn.textContent = "Clear Highscores";
     clearHighScoreBtn.setAttribute("data-type", "clear-score");
+    // sort highscores before displaying
+    highScores.sort(function (a, b) {
+        return b.score - a.score;
+    });
     // create element for each high score and append to list
     for (var i = 0; i < highScores.length; i++) {
         var highScoreLi = document.createElement("li");
         highScoreLi.textContent = highScores[i].initials + " - " + highScores[i].score;
         highScoreList.appendChild(highScoreLi);
-    }
+    };
     // add elements to page
     questionsEl.appendChild(highScoreHeading);
     questionsEl.appendChild(highScoreList);
