@@ -39,10 +39,11 @@ var timeLeft;
 var currentQuestion;
 var highScores;
 var gameTimer;
-
+// get scores from local storage
 var storedScores = JSON.parse(localStorage.getItem('highscores'));
-
+// check if the scores exist
 if (!storedScores) {
+    // create empty array if they dont
     highScores = [];
 } else {
     highScores = storedScores;
@@ -53,7 +54,6 @@ questionsEl.addEventListener('click', function (e) {
     e.preventDefault();
     var element = e.target;
     var endInput = document.querySelector("input");
-
     if (element.getAttribute("data-type") === "start-game") {
         startTimer();
         displayQuestion(questions[currentQuestion]);
@@ -99,7 +99,7 @@ questionsEl.addEventListener('click', function (e) {
         showHighScores();
     }
 });
-
+// when back button is pressed go to the original screen
 questionsEl.addEventListener('click', function (e) {
     e.preventDefault();
     var element = e.target;
@@ -109,7 +109,7 @@ questionsEl.addEventListener('click', function (e) {
         showWelcome();
     }
 });
-
+// when the clear highscores button is pressed run clearScores
 questionsEl.addEventListener('click', function (e) {
     e.preventDefault();
     var element = e.target;
@@ -158,14 +158,14 @@ function displayQuestion(q) {
     questionsEl.appendChild(questionh2);
     questionsEl.appendChild(questionList);
 }
-
+// add a new element showing if the user picked right or wrong which disappears after one second
 function displayResult(r) {
     var resultP = document.createElement('p');
     resultP.textContent = r;
     document.querySelector(".container").appendChild(resultP);
     setTimeout(function () { resultP.remove(); }, 1000);
 }
-
+// progress the question count or end game if there are no questions left
 function nextQuestion() {
     // if there are still questions left
     if (currentQuestion < questions.length - 1) {
@@ -177,7 +177,7 @@ function nextQuestion() {
         endGame();
     }
 }
-
+// show the end game screen where user can submit their score
 function endGame() {
     // clear screen
     questionsEl.innerHTML = "";
@@ -200,7 +200,7 @@ function endGame() {
     questionsEl.appendChild(endSubmitBtn);
 
 }
-
+// show the list of previous highscores
 function showHighScores() {
     // clear screen
     questionsEl.innerHTML = "";
@@ -231,7 +231,7 @@ function showHighScores() {
     questionsEl.appendChild(backBtn);
     questionsEl.appendChild(clearHighScoreBtn);
 }
-
+// show the main page with a button to start the game
 function showWelcome() {
     // clear screen
     questionsEl.innerHTML = "";
@@ -252,7 +252,7 @@ function showWelcome() {
     questionsEl.appendChild(welcomeP);
     questionsEl.appendChild(welcomeBtn);
 }
-
+// remove highscores from localstorage and the current variable
 function clearScores() {
     // clear scores from local storage and current variable
     localStorage.removeItem('highscores');
@@ -266,4 +266,5 @@ function init() {
     showWelcome();
 }
 
+// begin
 init();

@@ -1,3 +1,13 @@
+
+/* add styling to the header element which includes interactable text to display highscores and the games timer */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px;
+}
+
+/* set positioning of the main elements which are generated via JS */
 .container {
     margin: 0 10%;
     display: flex;
@@ -29,14 +39,10 @@
     color: grey;
 }
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 15px;
-}
-
 div button {
     display: flex;
     margin: 3% auto;
 }
+
+
+
