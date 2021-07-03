@@ -1,20 +1,28 @@
 // Create objects for each question
 var questionA = {
-    question: "a",
-    correctA: "0",
-    answers: [0, 1, 2, 3]
+    question: "Which one of these statements will select all elements with the class \"myClass\"",
+    correctA: "2",
+    answers: [
+        "document.querySelectorAll(\"#myClass\")",
+        "document.querySelector(\".myClass\")",
+        "document.querySelectorAll(\".myClass\")",
+        "document.querySelectorAll(\"myClass\")"]
 };
 
 var questionB = {
-    question: "b",
-    correctA: "0",
-    answers: [0, 1, 2, 3]
+    question: "What will be printed to the console given this code: <BR/> myArr=[1,2,3,4] <BR/> console.log(myArr[1])",
+    correctA: "1",
+    answers: ["1", "2", "3", "4"]
 };
 
 var questionC = {
-    question: "c",
+    question: "What do you need to type into the console to print \"3\" given this array: <BR/> myArr = [{pos: 0, val: 2}, {pos:1, val:3}, {pos:2, val: 1}",
     correctA: "0",
-    answers: [0, 1, 2, 3]
+    answers: [
+        "console.log(myArr[1].val)",
+        "console.log(myArr[1][1])",
+        "console.log(myArr.val)",
+        "console.log(myArr.pos[1]"]
 };
 
 // store all questions in array
@@ -30,6 +38,7 @@ var highScoreLink = document.querySelector('#view-highscores');
 var timeLeft;
 var currentQuestion;
 var highScores;
+var gameTimer;
 
 var storedScores = JSON.parse(localStorage.getItem('highscores'));
 
@@ -53,7 +62,9 @@ questionsEl.addEventListener('click', function (e) {
 
 // view highscores when button is clicked
 highScoreLink.addEventListener('click', function () {
-    clearInterval(gameTimer);
+    if (gameTimer) {
+        clearInterval(gameTimer);
+    };
     showHighScores();
 });
 
@@ -62,11 +73,14 @@ questionsEl.addEventListener('click', function (e) {
     var element = e.target;
     // check if an answer was clicked inside the questions element
     if (element.tagName === 'LI') {
-        // check if the answer is correct
+        // check if the answer is incorrect
         if (element.getAttribute('data-index') !== questions[currentQuestion].correctA) {
             // reduce current time as penalty for wrong answer
             timeLeft -= 10;
             timerEl.textContent = timeLeft;
+            displayResult("Wrong");
+        } else {
+            displayResult("Correct");
         }
         nextQuestion();
     }
@@ -133,7 +147,7 @@ function displayQuestion(q) {
     // generate html elements from question
     var questionh2 = document.createElement("h2");
     var questionList = document.createElement("ul");
-    questionh2.textContent = q.question;
+    questionh2.innerHTML = q.question;
     for (var i = 0; i < q.answers.length; i++) {
         var answer = document.createElement("li");
         answer.textContent = q.answers[i];
@@ -143,6 +157,16 @@ function displayQuestion(q) {
     // appends html elements to the page
     questionsEl.appendChild(questionh2);
     questionsEl.appendChild(questionList);
+}
+
+function displayResult(r) {
+    var resultDiv = document.createElement('div');
+    var resultP = document.createElement('p');
+    resultP.textContent = r;
+    resultDiv.appendChild(document.createElement('hr'));
+    resultDiv.appendChild(resultP);
+    document.querySelector(".container").appendChild(resultDiv);
+    setTimeout(function () { resultDiv.remove(); }, 1000);
 }
 
 function nextQuestion() {
