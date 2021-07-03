@@ -22,7 +22,7 @@ var questionC = {
         "console.log(myArr[1].val)",
         "console.log(myArr[1][1])",
         "console.log(myArr.val)",
-        "console.log(myArr.pos[1]"]
+        "console.log(myArr.pos[1])"]
 };
 
 // store all questions in array
@@ -72,15 +72,15 @@ highScoreLink.addEventListener('click', function () {
 questionsEl.addEventListener('click', function (e) {
     var element = e.target;
     // check if an answer was clicked inside the questions element
-    if (element.tagName === 'LI') {
+    if (element.tagName === 'LI' && element.getAttribute("data-index")) {
         // check if the answer is incorrect
         if (element.getAttribute('data-index') !== questions[currentQuestion].correctA) {
             // reduce current time as penalty for wrong answer
             timeLeft -= 10;
             timerEl.textContent = timeLeft;
-            displayResult("Wrong");
+            displayResult("Wrong 😞");
         } else {
-            displayResult("Correct");
+            displayResult("Correct! 😀");
         }
         nextQuestion();
     }
@@ -160,13 +160,10 @@ function displayQuestion(q) {
 }
 
 function displayResult(r) {
-    var resultDiv = document.createElement('div');
     var resultP = document.createElement('p');
     resultP.textContent = r;
-    resultDiv.appendChild(document.createElement('hr'));
-    resultDiv.appendChild(resultP);
-    document.querySelector(".container").appendChild(resultDiv);
-    setTimeout(function () { resultDiv.remove(); }, 1000);
+    document.querySelector(".container").appendChild(resultP);
+    setTimeout(function () { resultP.remove(); }, 1000);
 }
 
 function nextQuestion() {
